@@ -28,7 +28,7 @@ Implemented methods are separated:
 - `module/signal_maps/cli.py`: command-line interface.
 
 Each run creates a new folder:
-- `outputs/run_YYYYMMDD_HHMMSS/`
+- `outputs/`
 
 Inside the run folder:
 - `time_frequency_single.png`
@@ -169,3 +169,4 @@ out = generate_both_maps(signal_data=signal, sample_rate=fs)
 ## Backward Compatibility
 
 `signal_to_2d_maps.py` now forwards to the new package.
+
