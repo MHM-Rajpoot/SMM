@@ -28,7 +28,7 @@ Implemented methods are separated:
 - `module/signal_maps/cli.py`: command-line interface.
 
 Each run creates a new folder:
-- `outputs/`
+- `outputs/run_YYYYMMDD_HHMMSS/`
 
 Inside the run folder:
 - `time_frequency_single.png`
@@ -41,6 +41,90 @@ Inside the run folder:
 - `combined_topo.npz` (key `data`, shape: `n,x,y`, per-frame window topomap channel)
 - `combined_frames_preview.png` (single visual summary of `combined_frames_nxy2.npy`)
 - `combined_frames_xy2/` (per-frame `.npy`, each shape: `x,y,2`)
+
+## Current Local Output Folder (`ouputs/`)
+
+In this workspace, the folder `D:\jasmin\github\ouputs` currently contains:
+
+- `ouputs/sample1/`
+- `ouputs/sample2/`
+
+Each sample folder contains:
+
+- `audio_length.txt`: source audio duration text (sample2 is currently empty).
+- `combined_frames_nxy2.npy`: stacked combined maps with shape `(n, x, y, 2)`.
+- `combined_freq.npz`: frequency-channel frames (stored under key `data`).
+- `combined_topo.npz`: topographic-channel frames (stored under key `data`).
+- `combined_preview.png`: quick preview image of generated frames.
+
+Example output (`ouputs/sample1`):
+
+| File | Size (bytes) |
+| --- | ---: |
+| `audio_length.txt` | 5 |
+| `combined_frames_nxy2.npy` | 8091008 |
+| `combined_freq.npz` | 3717034 |
+| `combined_preview.png` | 71185 |
+| `combined_topo.npz` | 2232770 |
+
+CLI parameters to generate this Image for Audio Lenghth 50 Sec:
+![combined preview sample1](ouputs/sample1/combined_preview.png)
+
+```bash
+python -m signal_maps \
+  --input path/to/audio.wav \
+  --task both \
+  --output-mode medium \
+  --output-dir ouputs/sample1 \
+  --tf-method cwt \
+  --window-sec 2.0 \
+  --step-sec 1.0
+```
+
+Notes:
+- `combined_preview.png` is produced when `--task both` and `--output-mode medium` (or `all`) are used.
+- `combined_preview.png` is for human visual inspection only.
+- The real output file is `ouputs/sample1/combined_frames_nxy2.npy`.
+- `combined_frames_nxy2.npy` stores stacked 2-channel data in shape `(n, x, y, 2)`:
+  channel `0` = frequency map, channel `1` = topomap.
+- The exact original `--input` file used for the existing `sample1` folder is not stored in outputs.
+
+## EEGPipeline Input Parameters and CSV Outputs
+
+Based on your `EEGPipeline` snippet:
+
+```python
+EEGPipeline(
+    data_dir="EEG_data",
+    output_dir="eeg_2d_outputs",
+    strategy="tenth",
+)
+```
+
+- `data_dir`: folder containing input EEG `.mat` files.
+- `output_dir`: folder where pipeline outputs are written.
+- `strategy`: sampling strategy used by `SignalSampler`.
+
+At initialization, these files are created (and headers reset) in `output_dir`:
+
+- `results.csv` with columns:
+  `signal_id, subject, trial, channel, attended, status, output_dir, preview`
+- `labels.csv` with columns:
+  `signal_id, attended`
+
+One example `results.csv` output row:
+
+```csv
+signal_id,subject,trial,channel,attended,status,output_dir,preview
+S01_T03_C07,S01,3,7,1,ok,eeg_2d_outputs/S01_T03_C07,eeg_2d_outputs/S01_T03_C07/preview.png
+```
+
+One example `labels.csv` output row:
+
+```csv
+signal_id,attended
+S01_T03_C07,1
+```
 
 ## Install Dependencies
 
@@ -169,4 +253,3 @@ out = generate_both_maps(signal_data=signal, sample_rate=fs)
 ## Backward Compatibility
 
 `signal_to_2d_maps.py` now forwards to the new package.
-
