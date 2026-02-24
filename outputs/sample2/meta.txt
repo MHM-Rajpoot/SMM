@@ -1,0 +1,6 @@
+audio_length_seconds: 94
+audio_length_source: inferred from n_frames=93, window_sec=2.0, step_sec=1.0
+numpy_file_dimensions:
+- combined_frames_nxy2.npy: shape=(93, 129, 3, 2), dtype=<f4
+- combined_freq.npz[data]: shape=(93, 129, 3), dtype=<f4
+- combined_topo.npz[data]: shape=(93, 129, 3), dtype=<f4
