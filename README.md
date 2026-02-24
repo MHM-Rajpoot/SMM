@@ -68,7 +68,7 @@ Example output (`ouputs/sample1`):
 | `combined_topo.npz` | 2232770 |
 
 CLI parameters to generate this Image for Audio Lenghth 50 Sec:
-![combined preview sample1](ouputs/sample1/combined_preview.png)
+![combined preview sample1](outputs/sample1/combined_preview.png)
 
 ```bash
 python -m signal_maps \
