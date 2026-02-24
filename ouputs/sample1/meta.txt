@@ -1,6 +1,0 @@
-audio_length_seconds: 50
-audio_length_source: existing meta.txt
-numpy_file_dimensions:
-- combined_frames_nxy2.npy: shape=(49, 129, 160, 2), dtype=<f4
-- combined_freq.npz[data]: shape=(49, 129, 160), dtype=<f4
-- combined_topo.npz[data]: shape=(49, 129, 160), dtype=<f4
